@@ -1,11 +1,11 @@
 import React from "react";
 import "./TaskCard.css";
 
-// Define the types for the props
+// Define types for the props
 interface TaskCardProps {
   title: string;
-  dueDate?: string; // Optional for pending tasks
-  completedAtDate?: string; // Optional for completed tasks
+  dueDate?: string; // Only for pending tasks
+  completedAtDate?: string; // Only for completed tasks
   assigneeName: string;
 }
 
@@ -17,17 +17,21 @@ const TaskCard: React.FC<TaskCardProps> = ({
   assigneeName,
 }) => {
   return (
-    <div className="task-card">
+    <div className="TaskItem"> {/* Changed from task-card to TaskItem */}
       <h3 className="task-title">{title}</h3>
-      {dueDate && <p className="task-meta">Due on: {dueDate}</p>}
-      {completedAtDate && (
+      
+      {/* Show only the appropriate date */}
+      {completedAtDate ? (
         <p className="task-meta" style={{ color: "green" }}>
           Completed on: {completedAtDate}
         </p>
+      ) : (
+        dueDate && <p className="task-meta">Due on: {dueDate}</p>
       )}
+
       <p className="task-meta">Assignee: {assigneeName}</p>
     </div>
   );
 };
 
-export default TaskCard; // ✅ Ensure this is a default export
+export default TaskCard;

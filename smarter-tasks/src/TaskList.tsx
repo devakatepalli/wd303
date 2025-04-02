@@ -1,19 +1,27 @@
-import React from "react";
-import TaskCard from "./TaskCard";
-import { Task } from "./types";
+import Task from "./Task";
+
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  dueDate: string;
+}
 
 interface TaskListProps {
   tasks: Task[];
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
+export default function TaskList({ tasks }: TaskListProps) {
   return (
-    <div>
-      {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
-      ))}
+    <div className="task-list">
+      {tasks.length === 0 ? (
+        <p>No tasks added yet.</p>
+      ) : (
+        tasks.map((task) => <Task key={task.id} task={task} />)
+      )}
     </div>
   );
-};
+}
+
 
 export default TaskList;
