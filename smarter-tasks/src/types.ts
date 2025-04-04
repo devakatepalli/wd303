@@ -3,6 +3,4 @@ export interface Task {
   title: string;
   description?: string;
   dueDate: string;
-  completedAtDate?: string;
-  assigneeName?: string;
 }

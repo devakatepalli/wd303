@@ -12,25 +12,24 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!title.trim() || !dueDate.trim()) {
       alert("Title and Due Date are required!");
       return;
-    }
-  
-    const newTask: TaskType = {
+    }    
+
+    const newTask: Task = {
       id: Date.now(),
       title,
       description,
       dueDate,
     };
-  
-    onAddTask(newTask);
+
+    addTask(newTask);
     setTitle("");
     setDescription("");
     setDueDate("");
   };
-  
 
   return (
     <form onSubmit={handleSubmit}>

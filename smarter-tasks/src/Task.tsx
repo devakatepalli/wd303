@@ -1,37 +1,16 @@
-import React from "react";
+import { Task as TaskType } from "./types";
 import "./TaskCard.css";
 
-// Define types for the props
-interface TaskCardProps {
-  title: string;
-  dueDate?: string; // Only for pending tasks
-  completedAtDate?: string; // Only for completed tasks
-  assigneeName: string;
+interface TaskProps {
+  task: TaskType;
 }
 
-// Define and export TaskCard as default
-const TaskCard: React.FC<TaskCardProps> = ({
-  title,
-  dueDate,
-  completedAtDate,
-  assigneeName,
-}) => {
+export default function Task({ task }: TaskProps) {
   return (
-    <div className="TaskItem"> {/* Changed from task-card to TaskItem */}
-      <h3 className="task-title">{title}</h3>
-      
-      {/* Show only the appropriate date */}
-      {completedAtDate ? (
-        <p className="task-meta" style={{ color: "green" }}>
-          Completed on: {completedAtDate}
-        </p>
-      ) : (
-        dueDate && <p className="task-meta">Due on: {dueDate}</p>
-      )}
-
-      <p className="task-meta">Assignee: {assigneeName}</p>
+    <div className="task-card">
+      <h3 className="task-title">{task.title}</h3>
+      <p className="task-meta">Due Date: {task.dueDate}</p>
+      {task.description && <p className="task-meta">{task.description}</p>}
     </div>
   );
-};
-
-export default TaskCard;
+}

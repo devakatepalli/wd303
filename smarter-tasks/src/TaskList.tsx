@@ -1,14 +1,8 @@
 import Task from "./Task";
-
-interface Task {
-  id: number;
-  title: string;
-  description: string;
-  dueDate: string;
-}
+import { Task as TaskType } from "./types";
 
 interface TaskListProps {
-  tasks: Task[];
+  tasks: TaskType[];
 }
 
 export default function TaskList({ tasks }: TaskListProps) {
@@ -17,11 +11,12 @@ export default function TaskList({ tasks }: TaskListProps) {
       {tasks.length === 0 ? (
         <p>No tasks added yet.</p>
       ) : (
-        tasks.map((task) => <Task key={task.id} task={task} className="TaskItem" />)
+        tasks.map((task) => (
+          <div key={task.id} className="TaskItem">
+            <Task task={task} />
+          </div>
+        ))
       )}
     </div>
-  );
+  );  
 }
-
-
-export default TaskList;
