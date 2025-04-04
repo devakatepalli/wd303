@@ -1,31 +1,36 @@
-import { useState } from "react";
-import TaskList from "./TaskList";
-import { Task } from "./types";
-import "./TaskCard.css";
+import { useState } from 'react';
+import TaskList from './TaskList';
+import { Task } from './types';
+import { useLocalStorage } from './useLocalStorage';
+import './TaskCard.css';
 
 export default function TaskApp() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
+  const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
   const addTask = () => {
     if (!title.trim() || !dueDate.trim()) {
-      alert("Title and Due Date are required!");
+      alert('Title and Due Date are required!');
       return;
     }
 
     const newTask: Task = {
-      id: Date.now(), // Ensuring unique ID
+      id: Date.now(),
       title,
-      description: description || "No description", // Avoid undefined
+      description: description || 'No description',
       dueDate,
     };
 
-    setTasks((prevTasks) => [...prevTasks, newTask]); // Properly updating state
-    setTitle("");
-    setDescription("");
-    setDueDate("");
+    setTasks([...tasks, newTask]);
+    setTitle('');
+    setDescription('');
+    setDueDate('');
+  };
+
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   return (
@@ -60,7 +65,7 @@ export default function TaskApp() {
           Add Task
         </button>
       </div>
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} deleteTask={deleteTask} />
     </div>
   );
 }
