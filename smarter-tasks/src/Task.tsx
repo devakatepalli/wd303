@@ -1,20 +1,19 @@
-import React from 'react';
-import { Task as TaskType } from './types';
+import React from "react";
+import { Task as TaskType } from "./types";
 
 interface TaskProps {
   task: TaskType;
 }
 
 const Task: React.FC<TaskProps> = ({ task }) => {
-  if (!task) return null;
-
   return (
-    <>
+    <div>
       <h3 className="task-title">
         {task.title} ({task.dueDate})
       </h3>
       <p className="task-meta">{task.description}</p>
-    </>
+      <p className="task-meta">Assigned to: {task.assigneeName}</p>
+    </div>
   );
 };
 
