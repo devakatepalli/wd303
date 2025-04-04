@@ -8,9 +8,10 @@ interface TaskProps {
 const Task: React.FC<TaskProps> = ({ task }) => {
   return (
     <div className="TaskItem task-card">
-      <h2 className="task-title">{task.title}</h2>
+      <h3 className="task-title">
+        {task.title} ({task.dueDate})
+      </h3>
       <p className="task-meta">{task.description}</p>
-      <p className="task-meta"><strong>Due:</strong> {task.dueDate}</p>
     </div>
   );
 };
