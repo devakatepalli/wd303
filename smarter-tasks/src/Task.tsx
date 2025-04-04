@@ -6,6 +6,8 @@ interface TaskProps {
 }
 
 const Task: React.FC<TaskProps> = ({ task }) => {
+  if (!task) return null; // Prevent rendering undefined tasks
+
   return (
     <div className="TaskItem task-card">
       <h3 className="task-title">

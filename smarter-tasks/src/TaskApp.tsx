@@ -1,85 +1,66 @@
 import { useState } from "react";
 import TaskList from "./TaskList";
-import TaskForm from "./TaskForm";
 import { Task } from "./types";
 import "./TaskCard.css";
 
 export default function TaskApp() {
   const [tasks, setTasks] = useState<Task[]>([]);
-
-  const addTask = (newTask: Task) => {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-  };
-
-  return (
-    <div className="task-app">
-      <h1>Task Manager</h1>
-      <TaskForm addTask={addTask} />
-      <TaskList tasks={tasks} />
-    </div>
-  );
-}
-
-// TaskForm.tsx
-import React, { useState } from "react";
-import { Task } from "./types";
-
-interface TaskFormProps {
-  addTask: (task: Task) => void;
-}
-
-const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const addTask = () => {
     if (!title.trim() || !dueDate.trim()) {
       alert("Title and Due Date are required!");
       return;
     }
 
     const newTask: Task = {
-      id: Date.now(),
+      id: Date.now(), // Ensuring unique ID
       title,
-      description,
+      description: description || "No description", // Avoid undefined
       dueDate,
     };
 
-    addTask(newTask);
+    setTasks((prevTasks) => [...prevTasks, newTask]); // Properly updating state
     setTitle("");
     setDescription("");
     setDueDate("");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="task-form">
-      <input
-        id="todoTitle"
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Task Title"
-        required
-      />
-      <input
-        id="todoDescription"
-        type="text"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Task Description"
-      />
-      <input
-        id="todoDueDate"
-        type="date"
-        value={dueDate}
-        onChange={(e) => setDueDate(e.target.value)}
-        required
-      />
-      <button id="addTaskButton" type="submit">Add Task</button>
-    </form>
+    <div className="task-app">
+      <h1>Task Manager</h1>
+      <div className="task-form">
+        <input
+          id="todoTitle"
+          type="text"
+          placeholder="Task Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <input
+          id="todoDescription"
+          type="text"
+          placeholder="Task Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <input
+          id="todoDueDate"
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+        />
+        <button
+          id="addTaskButton"
+          onClick={addTask}
+          disabled={!title || !dueDate}
+        >
+          Add Task
+        </button>
+      </div>
+      <TaskList tasks={tasks} />
+    </div>
   );
-};
-
-export default TaskForm;
+}
