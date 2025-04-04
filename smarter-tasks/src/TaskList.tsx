@@ -17,7 +17,7 @@ export default function TaskList({ tasks }: TaskListProps) {
       {tasks.length === 0 ? (
         <p>No tasks added yet.</p>
       ) : (
-        tasks.map((task) => <Task key={task.id} task={task} />)
+        tasks.map((task) => <Task key={task.id} task={task} className="TaskItem" />)
       )}
     </div>
   );
