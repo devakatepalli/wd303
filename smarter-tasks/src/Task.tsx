@@ -1,16 +1,18 @@
+import React from "react";
 import { Task as TaskType } from "./types";
-import "./TaskCard.css";
 
 interface TaskProps {
   task: TaskType;
 }
 
-export default function Task({ task }: TaskProps) {
+const Task: React.FC<TaskProps> = ({ task }) => {
   return (
-    <div className="task-card">
-      <h3 className="task-title">{task.title}</h3>
-      <p className="task-meta">Due Date: {task.dueDate}</p>
-      {task.description && <p className="task-meta">{task.description}</p>}
+    <div className="TaskItem task-card">
+      <h2 className="task-title">{task.title}</h2>
+      <p className="task-meta">{task.description}</p>
+      <p className="task-meta"><strong>Due:</strong> {task.dueDate}</p>
     </div>
   );
-}
+};
+
+export default Task;
