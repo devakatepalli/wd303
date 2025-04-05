@@ -1,5 +1,5 @@
-import React from "react";
-import { Task as TaskType } from "./types";
+import React from 'react';
+import { Task as TaskType } from './types';
 
 interface TaskProps {
   task: TaskType;

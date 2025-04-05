@@ -1,6 +1,6 @@
 // TaskList.js
-import Task from "./Task";
-import { Task as TaskType } from "./types";
+import Task from './Task';
+import { Task as TaskType } from './types';
 
 interface TaskListProps {
   tasks: TaskType[];
@@ -13,10 +13,12 @@ export default function TaskList({ tasks, deleteTask }: TaskListProps) {
       {tasks.length === 0 ? (
         <p>No tasks added yet.</p>
       ) : (
-        tasks.map((task) => (
+        tasks.map(task => (
           <li key={task.id} className="TaskItem">
             <Task task={task} />
-            <button className="deleteTaskButton" onClick={() => deleteTask(task.id)}>❌ Delete</button>
+            <button className="deleteTaskButton" onClick={() => deleteTask(task.id)}>
+              ❌ Delete
+            </button>
           </li>
         ))
       )}

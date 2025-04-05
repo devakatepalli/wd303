@@ -7,12 +7,12 @@ const rootElement = document.getElementById('root');
 
 if (!rootElement) {
   throw new Error(
-    "Root element with ID 'root' not found. Ensure index.html has a <div id='root'></div>",
+    "Root element with ID 'root' not found. Ensure index.html has a <div id='root'></div>"
   );
 }
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
 );

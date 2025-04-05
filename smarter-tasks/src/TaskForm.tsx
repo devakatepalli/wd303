@@ -37,7 +37,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
         id="todoTitle"
         type="text"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={e => setTitle(e.target.value)}
         placeholder="Task title"
         required
       />
@@ -45,14 +45,14 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
         id="todoDescription"
         type="text"
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={e => setDescription(e.target.value)}
         placeholder="Task description"
       />
       <input
         id="todoDueDate"
         type="date"
         value={dueDate}
-        onChange={(e) => setDueDate(e.target.value)}
+        onChange={e => setDueDate(e.target.value)}
         required
       />
       <button id="addTaskButton" type="submit">
