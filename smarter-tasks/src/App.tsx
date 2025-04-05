@@ -10,7 +10,7 @@ import {
 import TaskCard from './Task';
 import NotFound from './pages/Notfound';
 import ProtectedRoute from './ProtectedRoute'; // Ensure this file exists and exports correctly
-import SignInPage from "./pages/SignInPage";
+import SignInPage from "./pages/Signin";
 import { AuthProvider, useAuth } from "./AuthContext";
 import HomePage from "./pages/HomePage"; // ✅ this is missing
 import TasksPage from './TaskApp';// ✅ Fix the import!
