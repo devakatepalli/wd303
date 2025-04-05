@@ -1,13 +1,17 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function NotFound() {
+  const navigate = useNavigate();
   return (
-    <div className="notfound-container">
-      <h1>404 - Page Not Found</h1>
-      <p>Oops! The page you are looking for does not exist.</p>
-      <Link to="/">
-        <button id="backToHomeButton">Go to Homepage</button>
-      </Link>
+    <div className="text-center p-6">
+      <h2 className="text-2xl font-bold mb-4">Page Not Found</h2>
+      <button
+        id="backToHomeButton"
+        onClick={() => navigate("/home")}
+        className="px-4 py-2 bg-blue-500 text-white rounded"
+      >
+        Back to Home
+      </button>
     </div>
   );
 }

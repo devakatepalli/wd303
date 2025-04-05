@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import TaskList from './TaskList';
 import { Task } from './types';
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import './TaskCard.css';
+import TaskForm from './TaskForm';
 
 export default function TaskApp() {
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);

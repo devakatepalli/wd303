@@ -9,6 +9,12 @@ import {
 } from 'react-router-dom';
 import TaskCard from './Task';
 import NotFound from './pages/Notfound';
+import ProtectedRoute from './ProtectedRoute'; // Ensure this file exists and exports correctly
+import SignInPage from "./pages/SignInPage";
+import { AuthProvider, useAuth } from "./AuthContext";
+import HomePage from "./pages/HomePage"; // ✅ this is missing
+import TasksPage from './TaskApp';// ✅ Fix the import!
+import TaskDetailsPage from "./pages/TaskDetailsPage";
 
 interface Task {
   id: number;
@@ -53,10 +59,11 @@ function TaskApp() {
   }, [pendingTasks, doneTasks]);
 
   const addTask = () => {
-    if (!title.trim() || !dueDate.trim()) {
-      alert('Title and Due Date are required.');
+    if (!title.trim() || !dueDate.trim() || !description.trim() || !assigneeName.trim()) {
+      alert("All fields are required.");
       return;
     }
+    
 
     const newTask: Task = {
       id: Date.now(),
@@ -178,25 +185,27 @@ function TaskApp() {
   );
 }
 
-function RoutesWrapper() {
-  const location = useLocation();
-  const isNotFoundPage = location.pathname === '/notfound';
+function AppRoutes() {
+  const { user } = useAuth();
 
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<TaskApp />} />
-        <Route path="/notfound" element={<NotFound />} />
-        <Route path="*" element={<Navigate to="/notfound" replace />} />
-      </Routes>
-    </Layout>
+    <Routes>
+      <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="/signin" element={<SignInPage />} />
+      <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+      <Route path="/tasks/:id" element={<ProtectedRoute><TaskDetailsPage /></ProtectedRoute>} />
+      <Route path="*" element={<ProtectedRoute><NotFound /></ProtectedRoute>} />
+      <Route path="/tasks" element={<ProtectedRoute><TaskApp /></ProtectedRoute>} />
+    </Routes>
   );
 }
 
 export default function App() {
   return (
-    <Router>
-      <RoutesWrapper />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
   );
 }

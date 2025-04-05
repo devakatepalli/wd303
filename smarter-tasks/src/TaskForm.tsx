@@ -23,7 +23,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
       title,
       description,
       dueDate,
+      assigneeName: username, // if you track logged-in user
     };
+    
 
     addTask(newTask);
     setTitle('');

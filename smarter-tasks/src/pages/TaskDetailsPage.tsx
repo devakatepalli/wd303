@@ -1,23 +1,22 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { TaskItem } from '../types';
+// pages/TaskDetailsPage.tsx
+import { useParams } from "react-router-dom";
 
-const TaskDetailsPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [taskAppState] = useLocalStorage<{ tasks: TaskItem[] }>('tasks', { tasks: [] });
+export default function TaskDetailsPage() {
+  const { id } = useParams();
 
-  const task = taskAppState.tasks.find(task => task.id.toString() === id);
+  const allTasks = JSON.parse(localStorage.getItem("pendingTasks") || "[]")
+    .concat(JSON.parse(localStorage.getItem("doneTasks") || "[]"));
+  const task = allTasks.find((t: any) => t.id === parseInt(id || ""));
 
-  if (!task) return <p className="text-center text-red-500">Task not found!</p>;
+  if (!task) return <div>Task not found</div>;
 
   return (
-    <div className="bg-white shadow-md rounded-md p-4 m-8">
-      <h3 className="text-lg font-medium">{task.title}</h3>
-      <p className="text-gray-600">{task.description}</p>
-      <p className="text-gray-600">{task.dueDate}</p>
+    <div className="p-4">
+      <h3 className="text-xl font-bold">{task.title}</h3>
+      <p><strong>Due:</strong> {task.dueDate}</p>
+      <p><strong>Assignee:</strong> {task.assigneeName}</p>
+      <p><strong>Description:</strong> {task.description}</p>
+      {task.completedAtDate && <p><strong>Completed:</strong> {task.completedAtDate}</p>}
     </div>
   );
-};
-
-export default TaskDetailsPage;
+}
