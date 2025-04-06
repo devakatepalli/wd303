@@ -1,16 +1,18 @@
-// Layout.tsx
-import Navbar from "./components/Navbar";
+import { useAuth } from './AuthContext';
+import { Navigate, useLocation } from 'react-router-dom';
+import { ReactNode } from 'react';
 
-function Layout({ children }: { children: React.ReactNode }) {
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
+
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
-  const isNotFoundPage = location.pathname === '/notfound';
-  const showNav = !isNotFoundPage && location.pathname !== "/signin";
 
-  return (
-    <div>
-      {showNav && <Navbar />}
-      {!isNotFoundPage && <h1 className="text-2xl font-bold text-center mb-6">Task Manager</h1>}
-      {children}
-    </div>
-  );
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" state={{ from: location }} replace />;
+  }
+
+  return <>{children}</>;
 }

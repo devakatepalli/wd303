@@ -15,15 +15,8 @@ import { AuthProvider, useAuth } from "./AuthContext";
 import HomePage from "./pages/HomePage"; // ✅ this is missing
 import TasksPage from './TaskApp';// ✅ Fix the import!
 import TaskDetailsPage from "./pages/TaskDetailsPage";
+import { Task } from './types'; // Use shared Task type
 
-interface Task {
-  id: number;
-  title: string;
-  dueDate: string;
-  completedAtDate?: string;
-  assigneeName: string;
-  description?: string;
-}
 
 // Wrapper to conditionally hide components like Header
 function Layout({ children }: { children: React.ReactNode }) {
@@ -63,14 +56,13 @@ function TaskApp() {
       alert("All fields are required.");
       return;
     }
-    
 
     const newTask: Task = {
       id: Date.now(),
       title,
       dueDate,
-      description: description.trim() || 'No description',
-      assigneeName: assigneeName.trim() || 'Unassigned',
+      description: description.trim(),
+      assigneeName: assigneeName.trim(),
     };
 
     setPendingTasks(prev => [...prev, newTask]);
@@ -186,26 +178,32 @@ function TaskApp() {
 }
 
 function AppRoutes() {
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/home" />} />
+      <Route
+        path="/"
+        element={
+          isAuthenticated ? <Navigate to="/home" /> : <Navigate to="/signin" />
+        }
+      />
       <Route path="/signin" element={<SignInPage />} />
       <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+      <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
       <Route path="/tasks/:id" element={<ProtectedRoute><TaskDetailsPage /></ProtectedRoute>} />
       <Route path="*" element={<ProtectedRoute><NotFound /></ProtectedRoute>} />
-      <Route path="/tasks" element={<ProtectedRoute><TaskApp /></ProtectedRoute>} />
     </Routes>
   );
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router> {/* Wrap this outermost! */}
+      <AuthProvider>
         <AppRoutes />
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
+

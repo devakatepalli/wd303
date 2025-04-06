@@ -9,6 +9,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
+  const [assigneeName, setAssigneeName] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,14 +24,14 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
       title,
       description,
       dueDate,
-      assigneeName: username, // if you track logged-in user
+      assigneeName,
     };
-    
 
     addTask(newTask);
     setTitle('');
     setDescription('');
     setDueDate('');
+    setAssigneeName('');
   };
 
   return (
@@ -56,6 +57,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
         value={dueDate}
         onChange={e => setDueDate(e.target.value)}
         required
+      />
+      <input
+        id="todoAssignee"
+        type="text"
+        value={assigneeName}
+        onChange={e => setAssigneeName(e.target.value)}
+        placeholder="Assignee name"
       />
       <button id="addTaskButton" type="submit">
         Add Task
