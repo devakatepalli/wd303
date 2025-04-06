@@ -32,7 +32,7 @@ export default function TaskApp() {
 
     const newTask: Task = {
       id: Date.now(),
-      title,
+      title: title.trim(),
       dueDate,
       description: description.trim(),
       assigneeName: assigneeName.trim(),
@@ -69,8 +69,6 @@ export default function TaskApp() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-4">Task Manager</h1>
-
       <div className="mb-6">
         <input
           id="todoTitle"
@@ -116,9 +114,9 @@ export default function TaskApp() {
           <h2 className="text-xl font-semibold mb-4">Pending</h2>
           {pendingTasks.map(task => (
             <div key={task.id} className="TaskItem p-4 bg-white shadow-md rounded mb-2">
-              <h3 className="text-lg font-bold">
-                <Link to={`/tasks/${task.id}`} className="taskTitle">{task.title}</Link>
-              </h3>
+              <Link to={`/tasks/${task.id}`} className="text-blue-600 underline">
+                <h3>{task.title}</h3>
+              </Link>
               <TaskCard task={task} />
               <button
                 className="px-3 py-1 bg-green-500 text-white rounded mr-2"
@@ -140,9 +138,9 @@ export default function TaskApp() {
           <h2 className="text-xl font-semibold mb-4">Done</h2>
           {doneTasks.map(task => (
             <div key={task.id} className="TaskItem p-4 bg-gray-200 shadow-md rounded mb-2">
-              <h3 className="text-lg font-bold">
-                <Link to={`/tasks/${task.id}`} className="taskTitle">{task.title}</Link>
-              </h3>
+              <Link to={`/tasks/${task.id}`} className="text-blue-600 underline">
+                <h3>{task.title}</h3>
+              </Link>
               <TaskCard task={task} />
               <button
                 className="deleteTaskButton px-3 py-1 bg-red-500 text-white rounded"
