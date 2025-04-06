@@ -1,45 +1,37 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { createContext, useContext, useState } from "react";
 
-interface AuthContextType {
+type AuthContextType = {
   isAuthenticated: boolean;
-  user: string | null;
-  signIn: (username: string, password: string) => boolean;
-  signOut: () => void;
-}
+  login: () => void;
+  logout: () => void;
+};
 
-const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: false,
-  user: null,
-  signIn: () => false,
-  signOut: () => {},
-});
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<string | null>(null);
-  const navigate = useNavigate();
-  const location = useLocation();
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return localStorage.getItem("isAuthenticated") === "true";
+  });
 
-  const signIn = (username: string, password: string) => {
-    if (username === 'admin' && password === 'admin') {
-      setUser(username);
-      return true;
-    }
-    return false;
+  const login = () => {
+    setIsAuthenticated(true);
+    localStorage.setItem("isAuthenticated", "true");
   };
 
-  const signOut = () => {
-    setUser(null);
-    navigate('/signin');
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.setItem("isAuthenticated", "false");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated: !!user, user, signIn, signOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
 }

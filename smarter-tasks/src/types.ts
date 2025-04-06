@@ -1,7 +1,8 @@
-export interface Task {
+export type Task = {
   id: number;
   title: string;
   description: string;
   dueDate: string;
-  assigneeName?: string;
-}
+  assigneeName: string;
+  completedAtDate?: string;
+};
