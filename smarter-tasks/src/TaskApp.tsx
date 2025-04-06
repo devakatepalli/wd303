@@ -11,6 +11,7 @@ export default function TaskApp() {
   const [description, setDescription] = useState('');
   const [assigneeName, setAssigneeName] = useState('');
 
+  // Load from localStorage on initial render
   useEffect(() => {
     const savedPending = localStorage.getItem('pendingTasks');
     const savedDone = localStorage.getItem('doneTasks');
@@ -19,6 +20,7 @@ export default function TaskApp() {
     if (savedDone) setDoneTasks(JSON.parse(savedDone));
   }, []);
 
+  // Persist both task lists to localStorage on every change
   useEffect(() => {
     localStorage.setItem('pendingTasks', JSON.stringify(pendingTasks));
     localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
@@ -38,7 +40,10 @@ export default function TaskApp() {
       assigneeName: assigneeName.trim(),
     };
 
-    setPendingTasks(prev => [...prev, newTask]);
+    const updated = [...pendingTasks, newTask];
+    setPendingTasks(updated);
+    localStorage.setItem('pendingTasks', JSON.stringify(updated));
+
     setTitle('');
     setDueDate('');
     setDescription('');
@@ -46,24 +51,31 @@ export default function TaskApp() {
   };
 
   const markAsDone = (taskId: number) => {
-    setPendingTasks(prev =>
-      prev.filter(task => {
-        if (task.id === taskId) {
-          setDoneTasks(donePrev => [
-            ...donePrev,
-            { ...task, completedAtDate: new Date().toISOString().split('T')[0] },
-          ]);
-        }
-        return task.id !== taskId;
-      })
-    );
+    const taskToComplete = pendingTasks.find(task => task.id === taskId);
+    if (!taskToComplete) return;
+
+    const updatedPending = pendingTasks.filter(task => task.id !== taskId);
+    const updatedDone = [...doneTasks, {
+      ...taskToComplete,
+      completedAtDate: new Date().toISOString().split('T')[0]
+    }];
+
+    setPendingTasks(updatedPending);
+    setDoneTasks(updatedDone);
+
+    localStorage.setItem('pendingTasks', JSON.stringify(updatedPending));
+    localStorage.setItem('doneTasks', JSON.stringify(updatedDone));
   };
 
   const deleteTask = (taskId: number, isPending: boolean) => {
     if (isPending) {
-      setPendingTasks(prev => prev.filter(t => t.id !== taskId));
+      const updatedPending = pendingTasks.filter(t => t.id !== taskId);
+      setPendingTasks(updatedPending);
+      localStorage.setItem('pendingTasks', JSON.stringify(updatedPending));
     } else {
-      setDoneTasks(prev => prev.filter(t => t.id !== taskId));
+      const updatedDone = doneTasks.filter(t => t.id !== taskId);
+      setDoneTasks(updatedDone);
+      localStorage.setItem('doneTasks', JSON.stringify(updatedDone));
     }
   };
 

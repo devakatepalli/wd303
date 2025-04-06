@@ -9,8 +9,8 @@ export default function NotFound() {
       <p className="text-lg mb-4">Page not found</p>
       <button
         id="backToHomeButton"
-        className="px-4 py-2 bg-blue-600 text-white rounded"
         onClick={() => navigate("/home")}
+        className="px-4 py-2 bg-blue-500 text-white rounded"
       >
         Back to Home
       </button>

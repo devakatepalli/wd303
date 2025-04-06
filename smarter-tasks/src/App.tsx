@@ -58,7 +58,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="*"
+        path="/notfound"
         element={
           <ProtectedRoute>
             <Layout>
